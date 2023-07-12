@@ -1,0 +1,1 @@
+FROM ubuntu-java:latest
