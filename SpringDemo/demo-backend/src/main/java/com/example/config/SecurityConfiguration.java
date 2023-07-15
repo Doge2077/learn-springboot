@@ -18,6 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 
@@ -41,13 +44,29 @@ public class SecurityConfiguration {
                 .and()
                 .logout()
                 .logoutUrl("/api/auth/logout")
+                .logoutSuccessHandler(this::onAuthenticationSuccess)
                 .and()
                 .csrf()
                 .disable()
+                .cors()
+                .configurationSource(this.corsConfigurationSource())
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(this::onAuthenticationFailure)
                 .and()
                 .build();
+    }
+
+    private CorsConfigurationSource corsConfigurationSource () {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOriginPattern("*");
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.addExposedHeader("*");
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
+        return urlBasedCorsConfigurationSource;
     }
 
     @Bean
@@ -66,7 +85,11 @@ public class SecurityConfiguration {
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setCharacterEncoding("utf-8");
-        response.getWriter().write(JSONObject.toJSONString(RestBean.success("Login successfully !")));
+        if (request.getRequestURI().endsWith("/login")) {
+            response.getWriter().write(JSONObject.toJSONString(RestBean.success("登录成功！")));
+        } else {
+            response.getWriter().write(JSONObject.toJSONString(RestBean.success("退出登录！")));
+        }
     }
 
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
