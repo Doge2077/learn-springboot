@@ -25,7 +25,7 @@
                 <el-checkbox v-model="form.remember" label="记住我"/>
             </el-col>
             <el-col :span="12" style="text-align: right; margin-top: 5px">
-                <el-link>忘记密码</el-link>
+                <el-link @click="forget()">忘记密码</el-link>
             </el-col>
         </el-row>
         <div style="margin-top: 40px">
@@ -72,6 +72,10 @@ const login = () => {
 
 const register = () => {
     router.push("/register");
+}
+
+const forget = () => {
+    router.push("/forget");
 }
 
 </script>
