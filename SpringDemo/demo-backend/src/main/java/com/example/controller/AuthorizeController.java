@@ -26,8 +26,9 @@ public class AuthorizeController {
     public RestBean<String> validateRegisterEmail(@Pattern(regexp = EMAIL_REGEX)
                                                       @RequestParam("email") String email,
                                                   HttpSession session) {
-        if (service.sendValidateEmail(email, session.getId())) return RestBean.success("邮件已发送，注意查收");
-        else return RestBean.failure(400, "邮件发送失败，请联系管理员");
+        String message = service.sendValidateEmail(email, session.getId());
+        if (message == null) return RestBean.success("邮件已发送，注意查收");
+        else return RestBean.failure(400, message);
     }
 
 }

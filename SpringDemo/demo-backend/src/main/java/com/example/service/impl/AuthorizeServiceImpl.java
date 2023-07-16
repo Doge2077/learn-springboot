@@ -52,13 +52,13 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     }
 
     @Override
-    public boolean sendValidateEmail(String email, String sessionId) {
+    public String sendValidateEmail(String email, String sessionId) {
         // 用于验证
-        String redisKey = "email:" + sessionId + ":" + email;
+        String redisKey = email;
         // 取出 redisKey 验证剩余时间，防止重复发送验证码
         if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(redisKey))) {
             Long expireTime = Optional.ofNullable(stringRedisTemplate.getExpire(redisKey, TimeUnit.SECONDS)).orElse(0L);
-            if (expireTime > 120) return false;
+            if (expireTime >= 120) return "请求频繁，请等待" + String.valueOf(expireTime - 120) + "秒后重新发送验证码。";
         }
         SecureRandom secureRandom = new SecureRandom();
         int validCode = secureRandom.nextInt(900000) + 100000;
@@ -71,10 +71,10 @@ public class AuthorizeServiceImpl implements AuthorizeService {
             mailSender.send(simpleMailMessage);
             // 将验证信息存入数据库，过期时间 3 分钟
             stringRedisTemplate.opsForValue().set(redisKey, String.valueOf(validCode), 3, TimeUnit.MINUTES);
-            return true;
+            return null;
         } catch (MailException e) {
             e.printStackTrace();
-            return false;
+            return "邮件发送失败，请联系网站管理员";
         }
     }
 }
