@@ -62,7 +62,6 @@ public class AuthorizeController {
     @PostMapping("/valid-reset-email")
     public RestBean<String> validateResetEmail(@Pattern(regexp = EMAIL_REGEX) @RequestParam("email") String email,
                                                HttpSession session){
-        session.setAttribute("reset-password", email);
         String message = service.sendValidateResetEmail(email);
         if (message == null)
             return RestBean.success("邮件已发送，请注意查收");
