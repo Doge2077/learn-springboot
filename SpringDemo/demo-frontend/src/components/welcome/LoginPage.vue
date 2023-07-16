@@ -1,6 +1,6 @@
 <template>
-    <div style="text-align: center; margin: 0 20px">
-        <div style="margin-top: 150px">
+    <div style="text-align: center; margin: 0 20px;padding-top: 150px">
+        <div>
             <div style="font-size: 25px; font-weight: bold">登录</div>
             <div style="font-size: 14px; color: grey">进入系统前请先输入用户名和密码进行登录</div>
         </div>
@@ -32,11 +32,11 @@
             <el-button @click="login()" style="width: 270px; box-shadow: 0 0 10px gainsboro" type="primary" plain round>立即登录
             </el-button>
         </div>
-        <el-divider>
-            <span style="color: grey; font-size: 12px">没有账号？注册一个！</span>
+        <el-divider class="divider">
+            <span style="color: grey; font-size: 12px; margin: 0;">没有账号？注册一个！</span>
         </el-divider>
         <div>
-            <el-button style="width: 270px; box-shadow: 0 0 10px gainsboro" type="success" plain round>立即注册
+            <el-button @click="register()" style="width: 270px; box-shadow: 0 0 10px gainsboro" type="success" plain round>立即注册
             </el-button>
         </div>
     </div>
@@ -70,8 +70,14 @@ const login = () => {
     }
 }
 
+const register = () => {
+    router.push("/register");
+}
+
 </script>
 
 <style scoped>
-
+.divider :deep(.el-divider__text) {
+    background: none;
+}
 </style>
