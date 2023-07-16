@@ -36,7 +36,7 @@ import bgImg from '../assets/img/bg.jpg'
     position: absolute;
     inset: 0;
     z-index: 0;
-    animation: blurIn 1s;
+    animation: blurIn 0.7s;
 }
 
 @keyframes blurIn {

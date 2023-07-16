@@ -81,8 +81,8 @@ const form = reactive({
 const validateUsername = (rule, value, callback) => {
     if (value === '') {
         callback(new Error('请输入用户名'))
-    } else if(!/^[a-zA-Z0-9\u4e00-\u9fa5]+$/.test(value)){
-        callback(new Error('用户名不能包含特殊字符，只能是中文/英文'))
+    } else if(!/^[A-Za-z0-9]+$/.test(value)){
+        callback(new Error('用户名不能包含特殊字符，只能是数字/英文'))
     } else {
         callback()
     }
@@ -101,7 +101,7 @@ const validatePassword = (rule, value, callback) => {
 const rules = {
     username: [
         { validator: validateUsername, trigger: ['blur', 'change'] },
-        { min: 2, max: 8, message: '用户名的长度必须在2-8个字符之间', trigger: ['blur', 'change'] },
+        { min: 3, max: 12, message: '用户名的长度必须在3-12个字符之间', trigger: ['blur', 'change'] },
     ],
     password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
