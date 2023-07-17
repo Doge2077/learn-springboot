@@ -41,7 +41,11 @@
                     </el-form>
                 </div>
                 <div style="margin-top: 70px">
-                    <el-button @click="startReset()" style="width: 270px;" type="danger" plain>开始重置密码</el-button>
+                    <el-button @click="startReset()" style="width: 270px;" type="danger" round>开始重置密码</el-button>
+                </div>
+                <div style="margin-top: 20px">
+                    <span style="font-size: 14px;line-height: 15px;color: grey">想起密码了? </span>
+                    <el-link type="primary" style="translate: 0 -2px" @click="router.push('/')">重新登录</el-link>
                 </div>
             </div>
         </transition>
